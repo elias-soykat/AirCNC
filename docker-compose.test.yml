@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  aircnc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aircnc
+    depends_on:
+      - mongo
+    env_file: .env
+    ports:
+      - 4000:4000
+    command: npm run test
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - ${DB_PORT}:${PORT}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER_NAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}

@@ -21,5 +21,4 @@ Able to select the desired room type and proceed with the booking
 Receive the notification about the booking details once the booking is completed.
 
 
-
 ![Project Workflow](https://github.com/elias-soykat/AirCNC/assets/76895393/e8f499a2-aa8a-4ce8-be47-44da9e7cea12)

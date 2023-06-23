@@ -1,7 +1,9 @@
-const Joi = require('joi');
-const { gender, role } = require('./users.enum');
+import Joi from 'joi';
 
-exports.registrationValidator = Joi.object()
+import { Gender, Role } from './user.enum';
+import { ILogin, IUser } from './user.interface';
+
+export const registrationValidator = Joi.object<IUser>()
   .options({ abortEarly: false, stripUnknown: true })
   .keys({
     name: Joi.string().required(),
@@ -19,14 +21,14 @@ exports.registrationValidator = Joi.object()
         'any.required': 'Password is required',
       }),
     gender: Joi.string()
-      .valid(...Object.values(gender))
+      .valid(...Object.values(Gender))
       .required(),
     role: Joi.string()
-      .valid(...Object.values(role))
+      .valid(...Object.values(Role))
       .required(),
   });
 
-exports.loginValidator = Joi.object()
+export const loginValidator = Joi.object<ILogin>()
   .options({ abortEarly: false, stripUnknown: true })
   .keys({
     email: Joi.string().email().required(),

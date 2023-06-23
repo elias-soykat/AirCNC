@@ -5,9 +5,10 @@ It always return an array [err,data]
 if there's error, data will be null. or vice versa
  */
 
-module.exports = async (_promise) =>
-  new Promise((resolve) => {
-    _promise
+// prettier-ignore
+export default async function <T>(promise: Promise<T>): Promise<[Error | null, T | null]> {
+  return new Promise<[Error | null, T | null]>((resolve) => {
+    promise
       .then((value) => {
         resolve([null, value]);
       })
@@ -15,3 +16,4 @@ module.exports = async (_promise) =>
         resolve([err, null]);
       });
   });
+}

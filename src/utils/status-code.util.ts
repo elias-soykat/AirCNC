@@ -1,4 +1,4 @@
-module.exports = {
+const HTTP_STATUS = {
   BAD_REQUEST: {
     message: 'Bad Request',
     code: 400,
@@ -32,3 +32,5 @@ module.exports = {
     code: 201,
   },
 };
+
+export default HTTP_STATUS;

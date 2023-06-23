@@ -1,20 +1,26 @@
-const bcrypt = require('bcryptjs');
-const logger = require('../utils/logger.util');
-const userService = require('./users.service');
-const err = require('../utils/error.util');
+import bcrypt from 'bcryptjs';
+import { Request, Response } from 'express';
 
+import err from '../utils/error.util';
+import logger from '../utils/logger.util';
+import HTTP_STATUS from '../utils/status-code.util';
+
+import { loginValidator, registrationValidator } from './users.validator';
 const {
   UNPROCESSABLE,
-  INTERNAL_SERVER,
   CONFLICT,
   REGISTRATION,
   NOT_FOUND,
   UNAUTHORIZED,
-} = require('../utils/status-code.util');
-const { registrationValidator, loginValidator } = require('./users.validator');
+  INTERNAL_SERVER,
+} = HTTP_STATUS;
 
-module.exports = {
-  registrationUser: async (req, res) => {
+import userService from './user.service';
+
+
+
+export default {
+  registrationUser: async (req: Request, res: Response) => {
     try {
       const { error } = registrationValidator.validate(req.body);
       if (error) {
@@ -28,19 +34,18 @@ module.exports = {
 
       const user = await userService.createUser(req.body);
       const token = user.generateToken();
-      const newUser = user.toJSON();
-      delete newUser.password;
 
+      const { password, ...newUser } = user.toJSON();
       return res.status(REGISTRATION.code).json({ data: { ...newUser, token } });
-    } catch (error) {
-      logger.error(error);
+    } catch (err) {
+      logger.error(err);
       return res.status(INTERNAL_SERVER.code).json({
         message: INTERNAL_SERVER.message,
       });
     }
   },
 
-  loginUser: async (req, res) => {
+  loginUser: async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
 
